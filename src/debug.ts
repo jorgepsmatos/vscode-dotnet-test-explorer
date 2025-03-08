@@ -21,7 +21,7 @@ export class Debug {
         }
 
         if (!debugRunnerInfo.waitingForAttach) {
-            debugRunnerInfo.waitingForAttach = data.indexOf("Waiting for debugger attach...") > -1;
+            debugRunnerInfo.waitingForAttach = data.indexOf("Process Id:") > -1;
         }
 
         if (debugRunnerInfo.processId.length <= 0) {
@@ -33,12 +33,26 @@ export class Debug {
         }
 
         if (debugRunnerInfo.waitingForAttach && debugRunnerInfo.processId.length > 0) {
+            const config = vscode.workspace.getConfiguration('dotnet-test-explorer.debugger');
+            const pipeTransportEnabled = config.get<boolean>('pipeTransportEnabled', true);
+            
             debugRunnerInfo.config = {
                 name: "NET TestExplorer Core Attach",
                 type: "coreclr",
                 request: "attach",
                 processId: debugRunnerInfo.processId,
             };
+
+            if (pipeTransportEnabled) {
+                debugRunnerInfo.config.pipeTransport = {
+                    pipeCwd: config.get<string>('pipeCwd', "${workspaceFolder}"),
+                    pipeProgram: config.get<string>('pipeProgram', "bash.exe"),
+                    pipeArgs: config.get<string[]>('pipeArgs', ["-c"]),
+                    debuggerArgs: config.get<string[]>('debuggerArgs', ["--interpreter=vscode"]),
+                    debuggerPath: config.get<string>('debuggerPath', "netcoredbg.exe"),
+                    quoteArgs: config.get<boolean>('quoteArgs', true)
+                };
+            }
         }
 
         return debugRunnerInfo;

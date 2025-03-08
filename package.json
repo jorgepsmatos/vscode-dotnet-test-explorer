@@ -95,6 +95,10 @@
         "title": "Run .NET Core Test in context"
       },
       {
+        "command": "dotnet-test-explorer.debugTestInContext",
+        "title": "Debug .NET Core Test in context"
+      },
+      {
         "command": "dotnet-test-explorer.gotoTest",
         "title": "Go to Test",
         "icon": {
@@ -169,6 +173,21 @@
         },
         {
           "command": "dotnet-test-explorer.runTestInContext",
+          "group": "dotnetTestExplorer@0",
+          "when": "resourceLangId == vb"
+        },
+        {
+          "command": "dotnet-test-explorer.debugTestInContext",
+          "group": "dotnetTestExplorer@0",
+          "when": "resourceLangId == csharp"
+        },
+        {
+          "command": "dotnet-test-explorer.debugTestInContext",
+          "group": "dotnetTestExplorer@0",
+          "when": "resourceLangId == fsharp"
+        },
+        {
+          "command": "dotnet-test-explorer.debugTestInContext",
           "group": "dotnetTestExplorer@0",
           "when": "resourceLangId == vb"
         }
@@ -267,6 +286,47 @@
           "type": "boolean",
           "default": false,
           "description": "If true, will discover/build and run test in parallel if you have multiple test projects"
+        },
+        "dotnet-test-explorer.debugger.pipeTransportEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable pipe transport for debugging"
+        },
+        "dotnet-test-explorer.debugger.pipeCwd": {
+          "type": "string",
+          "default": "${workspaceFolder}",
+          "description": "Working directory for pipe transport"
+        },
+        "dotnet-test-explorer.debugger.pipeProgram": {
+          "type": "string",
+          "default": "bash.exe",
+          "description": "Program to use for pipe transport"
+        },
+        "dotnet-test-explorer.debugger.pipeArgs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": ["-c"],
+          "description": "Arguments for the pipe program"
+        },
+        "dotnet-test-explorer.debugger.debuggerArgs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": ["--interpreter=vscode"],
+          "description": "Arguments for the debugger"
+        },
+        "dotnet-test-explorer.debugger.debuggerPath": {
+          "type": "string",
+          "default": "netcoredbg.exe",
+          "description": "Path to the debugger executable"
+        },
+        "dotnet-test-explorer.debugger.quoteArgs": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to quote the arguments"
         }
       }
     },

@@ -100,6 +100,12 @@ export function activate(context: vscode.ExtensionContext) {
         });
     }));
 
+    context.subscriptions.push(vscode.commands.registerTextEditorCommand("dotnet-test-explorer.debugTestInContext", (editor: vscode.TextEditor) => {
+        findTestInContext.find(editor.document, editor.selection.start).then((testRunContext) => {
+            testCommands.debugTestByName(testRunContext.testName, testRunContext.isSingleTest);
+        });
+    }));
+
     context.subscriptions.push(vscode.commands.registerCommand("dotnet-test-explorer.gotoTest", (test: TestNode) => {
         gotoTest.go(test);
     }));
